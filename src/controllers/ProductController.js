@@ -1,7 +1,7 @@
-import Product from "../models/Product";
+import Product from "../models/Product.js";
 import { validationResult } from "express-validator";
 
-export const createProduct = async (req: any, res: any) => {
+export const createProduct = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
@@ -15,10 +15,10 @@ export const createProduct = async (req: any, res: any) => {
     }
 };
 
-export const getAllProducts = async (req: any, res: any) => {
+export const getAllProducts = async (req, res) => {
     try {
         const { search, category, minPrice, maxPrice, page = 1, limit = 10 } = req.query;
-        const filters: any = {};
+        const filters = {};
     
         if (search) filters.name = { $regex: search, $options: "i" };
         if (category) filters.category = category;
@@ -36,7 +36,7 @@ export const getAllProducts = async (req: any, res: any) => {
     }
 };
 
-export const getProductById = async (req: any, res: any) => {
+export const getProductById = async (req, res) => {
     try {
         const product = await Product.findById({ id : req.params.id });
         if(!product){
@@ -50,7 +50,7 @@ export const getProductById = async (req: any, res: any) => {
 
 };
 
-export const updateProduct = async (req: any, res: any) => {
+export const updateProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).json({ message: "Product not found" });
@@ -64,7 +64,7 @@ export const updateProduct = async (req: any, res: any) => {
     }
 };
 
-export const deleteProduct = async (req: any, res: any) => {
+export const deleteProduct = async (req, res) => {
     try {
         const product = await Product.findById({ id: req.params.id });
         if(!product){

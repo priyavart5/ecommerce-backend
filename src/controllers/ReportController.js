@@ -1,11 +1,9 @@
-import { Request, Response } from "express";
-import Order from "../models/Order";
-import OrderItem from "../models/OrderItem";
-import User from "../models/User";
-import Product from "../models/Product";
-import { sequelize } from "../config/db";
+import Order from "../models/Order.js";
+import OrderItem from "../models/OrderItem.js";
+import User from "../models/User.js";
+import { sequelize } from "../config/db.js";
 
-export const getSalesReport = async (req: Request, res: Response) => {
+export const getSalesReport = async (req, res) => {
   try {
     const totalRevenue = await Order.sum("totalAmount");
     const totalOrders = await Order.count();
@@ -22,7 +20,7 @@ export const getSalesReport = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserReport = async (req: Request, res: Response) => {
+export const getUserReport = async (req, res) => {
   try {
     const totalUsers = await User.count();
     const topCustomers = await Order.findAll({
@@ -38,7 +36,7 @@ export const getUserReport = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductReport = async (req: Request, res: Response) => {
+export const getProductReport = async (req, res) => {
   try {
     const mostPurchasedProducts = await OrderItem.findAll({
       attributes: ["productId", [sequelize.fn("SUM", sequelize.col("quantity")), "totalSold"]],

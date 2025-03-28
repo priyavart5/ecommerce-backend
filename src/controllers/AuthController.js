@@ -1,9 +1,13 @@
-import User from "../models/User";
+import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
+import dotenv from "dotenv";
 
-export const login = async (req: any, res: any) => {
+dotenv.config();
+
+
+export const login = async (req, res) => {
 
     const { email, password } = req.body;
 
@@ -18,7 +22,7 @@ export const login = async (req: any, res: any) => {
             return res.status(400).json({ message: "Invalid Password!"});
         }
 
-        const token  = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET!, { expiresIn: "7D" });
+        const token  = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7D" });
 
         res.status(200).json({ message: "Login successful", token , userId: user.id, userEmail: user.email });
     } catch (error) {
@@ -26,7 +30,7 @@ export const login = async (req: any, res: any) => {
     }
 }
 
-export const register = async ( req: any, res: any ) => {
+export const register = async ( req, res ) => {
 
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
@@ -42,7 +46,7 @@ export const register = async ( req: any, res: any ) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, email, password: hashedPassword });
 
-        const token = jwt.sign({ id: user.id, role: "user" }, process.env.JWT_SECRET!, { expiresIn: "7D" });
+        const token = jwt.sign({ id: user.id, role: "user" }, process.env.JWT_SECRET, { expiresIn: "7D" });
 
         return res.status(200).json({ message: "Register successful", token , userId: user.id, userEmail: user.email });
     } catch (error) {

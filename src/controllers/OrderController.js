@@ -1,9 +1,9 @@
-import Cart from "../models/Cart";
-import Order from "../models/Order";
-import OrderItem from "../models/OrderItem";
-import Product from "../models/Product";
+import Cart from "../models/Cart.js";
+import Order from "../models/Order.js";
+import OrderItem from "../models/OrderItem.js";
+import Product from "../models/Product.js";
 
-export const placeOrder = async (req: any, res: any) => {
+export const placeOrder = async (req, res) => {
 
   const userId = req.user.id;
 
@@ -24,7 +24,7 @@ export const placeOrder = async (req: any, res: any) => {
 
     const order = await Order.create({ userId, totalAmount, status: "pending" });
 
-    orderItems.forEach((item: any) => (item.orderId = order.id));
+    orderItems.forEach((item) => (item.orderId = order.id));
     await OrderItem.bulkCreate(orderItems);
 
     await Cart.deleteOne({ userId });
