@@ -2,10 +2,8 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/db.js";
 import Order from "./Order.js";
 
-class OrderItem extends Model {
-}
-
-OrderItem.init(
+const OrderItem = sequelize.define(
+  "OrderItem",
   {
     id: {
       type: DataTypes.UUID,
@@ -31,7 +29,6 @@ OrderItem.init(
     },
   },
   {
-    sequelize,
     tableName: "order_items",
     timestamps: true,
   }

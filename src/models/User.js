@@ -1,9 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/db.js";
 
-class User extends Model{}
-
-User.init(
+const User = sequelize.define(
+    "User",
     {
         id : {
             type: DataTypes.UUID,
@@ -33,7 +32,6 @@ User.init(
         },
     },
     {
-        sequelize,
         tableName: "users",
         timestamps: true
     }
