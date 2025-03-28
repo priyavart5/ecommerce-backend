@@ -1,13 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const compression = require("compression");
-const { sequelize, connectMongoDB } = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
-const productRoutes = require("./routes/productRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const reportRoutes = require("./routes/reportRoutes");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import { sequelize, connectMongoDB } from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -22,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 sequelize
   .sync({ force: false })
   .then(() => console.log("PostgreSQL Synced"))
-  .catch((err: any) => console.error("Sequelize sync error:", err));
+  .catch((err) => console.error("Sequelize sync error:", err));
   
 connectMongoDB();
 

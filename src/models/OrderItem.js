@@ -1,13 +1,8 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db";
-import Order from "./Order";
+import { sequelize } from "../config/db.js";
+import Order from "./Order.js";
 
 class OrderItem extends Model {
-  public id!: number;
-  public orderId!: string;
-  public productId!: string;
-  public quantity!: number;
-  public price!: number;
 }
 
 OrderItem.init(

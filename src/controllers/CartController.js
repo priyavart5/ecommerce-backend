@@ -1,8 +1,8 @@
-import Cart from "../models/Cart";
-import Product from "../models/Product";
+import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
 
 
-export const addToCart = async (req: any, res: any) => {
+export const addToCart = async (req, res) => {
     const { productId, quantity } = req.body;
     const userId = req.user.id;
 
@@ -33,7 +33,7 @@ export const addToCart = async (req: any, res: any) => {
     }
 };
 
-export const removeFromCart = async (req: any, res: any) => {
+export const removeFromCart = async (req, res) => {
 
     const { productId } = req.body;
     const userId = req.user.id;

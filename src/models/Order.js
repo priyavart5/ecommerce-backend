@@ -1,12 +1,7 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../config/db";
+import { sequelize } from "../config/db.js";
 
-class Order extends Model {
-  public id!: number;
-  public userId!: string;
-  public totalAmount!: number;
-  public status!: string;
-}
+class Order extends Model {}
 
 Order.init(
   {

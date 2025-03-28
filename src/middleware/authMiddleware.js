@@ -1,13 +1,16 @@
-
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-export const protect = async (req: any, res: any, next: any) => {
+dotenv.config();
+
+
+export const protect = async (req, res, next) => {
   let token = req.headers.authorization?.split(" ")[1];
 
   if (!token) return res.status(401).json({ message: "Unauthorized - No token provided" });
 
   try {
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { id: decoded.id, role: decoded.role };
     next();
   } catch (error) {
@@ -15,7 +18,7 @@ export const protect = async (req: any, res: any, next: any) => {
   }
 };
 
-export const isAdmin = async (req: any, res: any, next: any) => {
+export const isAdmin = async (req, res, next) => {
   if (req.user?.role !== "admin") {
     return res.status(403).json({ message: "Forbidden - Admins only" });
   }

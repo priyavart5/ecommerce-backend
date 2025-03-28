@@ -1,6 +1,6 @@
-const { Sequelize } = require('sequelize');
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
+import { Sequelize } from 'sequelize';
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -14,7 +14,6 @@ export const sequelize = new Sequelize(
     logging: false,
   }
 );
-
 
 export const connectMongoDB = async () => {
     try {
