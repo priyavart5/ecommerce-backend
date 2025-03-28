@@ -12,7 +12,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
 
 app.use(cors());
 app.use(helmet());
@@ -22,10 +21,10 @@ app.use(express.urlencoded({ extended: true }));
 
 
 sequelize
-  .sync({ force: false })
-  .then(() => console.log("PostgreSQL Synced"))
-  .catch((err) => console.error("Sequelize sync error:", err));
-  
+.sync({ force: false })
+.then(() => console.log("PostgreSQL connected"))
+.catch((err) => console.error("Sequelize sync error:", err));
+
 connectMongoDB();
 
 app.use("/api/auth",  authRoutes);
@@ -34,6 +33,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/reports", reportRoutes);
 
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

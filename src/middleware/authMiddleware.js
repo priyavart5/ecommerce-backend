@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-
 export const protect = async (req, res, next) => {
   let token = req.headers.authorization?.split(" ")[1];
 
@@ -20,7 +19,7 @@ export const protect = async (req, res, next) => {
 
 export const isAdmin = async (req, res, next) => {
   if (req.user?.role !== "admin") {
-    return res.status(403).json({ message: "Forbidden - Admins only" });
+    return res.status(403).json({ message: "Unauthorized - Invalid access" });
   }
   next();
 };
