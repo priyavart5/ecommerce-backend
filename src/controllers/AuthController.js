@@ -22,9 +22,9 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: "Invalid Password!"});
         }
 
-        const token  = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7D" });
+        const token  = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7D" });
 
-        res.status(200).json({ message: "Login successful", token , userId: user.id, userEmail: user.email });
+        res.status(200).json({ message: "Login successful", token , userId: user.id, userEmail: user.email, userName: user.name });
     } catch (error) {
         res.status(500).json({ message: "Server error" });
     }
@@ -46,7 +46,7 @@ export const register = async ( req, res ) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await User.create({ name, email, password: hashedPassword });
 
-        const token = jwt.sign({ id: user.id, role: "user" }, process.env.JWT_SECRET, { expiresIn: "7D" });
+        const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: "user" }, process.env.JWT_SECRET, { expiresIn: "7D" });
 
         return res.status(200).json({ message: "Register successful", token , userId: user.id, userEmail: user.email });
     } catch (error) {

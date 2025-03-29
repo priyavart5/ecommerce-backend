@@ -5,8 +5,8 @@ import { body } from "express-validator";
 
 const router = express.Router();
 
-router.get("/", getAllProducts);
 router.get("/:id", getProductById);
+router.get("/", getAllProducts);
 router.post(
   "/",
   protect,

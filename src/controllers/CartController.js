@@ -7,18 +7,17 @@ export const addToCart = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        
-        const product = await Product.findById({ productId });
-        if(!product){
+        const product = await Product.findById(productId);
+        if (!product) {
             return res.status(404).json({ message: "Product not found" });
         }
 
         let cart = await Cart.findOne({ userId });
-        if(!cart){
-            cart = new Cart({ userId, items:[ productId, quantity ] });
+        if (!cart) {
+            cart = new Cart({ userId, items: [{ productId, quantity }] });
         } else {
-            const itemIndex = cart.items.findIndex((items) => items.productId === productId);
-            if(itemIndex > -1){
+            const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+            if (itemIndex > -1) {
                 cart.items[itemIndex].quantity += quantity;
             } else {
                 cart.items.push({ productId, quantity });
@@ -26,10 +25,9 @@ export const addToCart = async (req, res) => {
         }
 
         await cart.save();
-
         res.status(200).json({ message: "Cart updated", cart });
     } catch (error) {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error", error });
     }
 };
 
@@ -44,7 +42,7 @@ export const removeFromCart = async (req, res) => {
             return res.status(404).json({ message: "Cart not found" });
         }
     
-        cart.items = cart.items.filter((items) => items.productId === productId);
+        cart.items = cart.items.filter((items) => items.productId !== productId);
         await cart.save();
 
         res.status(200).json({ message: "Item removed from cart", cart });
@@ -53,3 +51,17 @@ export const removeFromCart = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+export const getCartItems = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        const cart = await Cart.findById(req.params.id);
+        if(!cart){
+            return res.status(404).json({ message: "Cart is empty" });
+        }
+
+        res.status(200).json(cart);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+}
